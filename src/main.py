@@ -9,6 +9,30 @@ screen = pygame.display.set_mode((game_width, game_height))
 clock = pygame.time.Clock()
 running = True
 
+a_enemy_runner = []
+path = "../assets/enemy_runner/"
+files = os.listdir(path)
+for f in files:
+    temp = pygame.image.load(path + f)
+    temp.set_colorkey((255,255,255))
+    a_enemy_runner.append(temp)
+    
+class Enemy():
+    def __init__(self, x, y, speed):
+        self.x = x
+        self.y = y
+        self.speed = speed
+        self.i = 0
+
+    def update(self, screen):
+        self.i += 1
+        self.x -= self.speed
+        if self.i <= len(a_enemy_runner) -1:
+            screen.blit(a_enemy_runner[self.i], (self.x, 100))
+        else:
+            self.i = 0
+
+
 player_x = 100
 
 punching = False
@@ -39,6 +63,8 @@ for f in files:
     temp = pygame.image.load(path + f)
     temp.set_colorkey((255,255,255))
     a_tap.append(temp)
+
+Enemies = [Enemy(1000, 0, 3)]
     
 
 # ***************** Loop Land Below *****************
@@ -89,6 +115,9 @@ while running:
             screen.blit(a_tap[i], (player_x, 100))
         else:
             i = 0
+
+    for enemy in Enemies:
+        enemy.update(screen)
     
 
     # Tell pygame to update the screen
