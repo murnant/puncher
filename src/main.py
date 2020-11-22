@@ -9,7 +9,11 @@ screen = pygame.display.set_mode((game_width, game_height))
 clock = pygame.time.Clock()
 running = True
 
+player_x = 100
+
 punching = False
+player_running = False
+
 a_punch = []
 i = 0
 path = "../assets/punch/"
@@ -18,6 +22,23 @@ for f in files:
     temp = pygame.image.load(path + f)
     temp.set_colorkey((255,255,255))
     a_punch.append(temp)
+
+
+a_run = []
+path = "../assets/run/"
+files = os.listdir(path)
+for f in files:
+    temp = pygame.image.load(path + f)
+    temp.set_colorkey((255,255,255))
+    a_run.append(temp)
+    
+a_tap = []
+path = "../assets/tap_tap/"
+files = os.listdir(path)
+for f in files:
+    temp = pygame.image.load(path + f)
+    temp.set_colorkey((255,255,255))
+    a_tap.append(temp)
     
 
 # ***************** Loop Land Below *****************
@@ -34,17 +55,38 @@ while running:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
         punching = True
-        
-    if punching:
+    if keys[pygame.K_RIGHT]:
+        player_x += 1
+        player_running = True
+    if keys[pygame.K_LEFT]:
+        player_x -= 1
+    
+
+    if player_running:
         i += 1
-    if i <= len(a_punch) -1:
-        screen.blit(a_punch[i], (100, 100))
+        if i <= len(a_run) -1:
+            screen.blit(a_run[i], (player_x, 100))
+        else:
+            i = 0
+            player_running = False
+    
+        
+    elif punching:
+        i += 1
+        if i <= len(a_punch) -1:
+            screen.blit(a_punch[i], (player_x, 100))
+        else:
+            i = 0
+            punching = False
     else:
-        i = 0
-        punching = False
+        i += 1
+        if i <= len(a_tap) -1:
+            screen.blit(a_tap[i], (player_x, 100))
+        else:
+            i = 0
     
 
     # Tell pygame to update the screen
     pygame.display.flip()
-    clock.tick(5)
+    clock.tick(50)
     pygame.display.set_caption("MY GAME fps: " + str(clock.get_fps()))
