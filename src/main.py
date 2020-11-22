@@ -56,16 +56,20 @@ while running:
     if keys[pygame.K_SPACE]:
         punching = True
     if keys[pygame.K_RIGHT]:
-        player_x += 1
+        player_x += 3
         player_running = True
+        Direction = False
     if keys[pygame.K_LEFT]:
-        player_x -= 1
+        player_x -= 3
+        player_running = True
+        Direction = True
     
-
+    
     if player_running:
         i += 1
         if i <= len(a_run) -1:
-            screen.blit(a_run[i], (player_x, 100))
+            player_pic_Direction = pygame.transform.flip(a_run[i], Direction, False)
+            screen.blit(player_pic_Direction, (player_x, 100))
         else:
             i = 0
             player_running = False
@@ -74,7 +78,8 @@ while running:
     elif punching:
         i += 1
         if i <= len(a_punch) -1:
-            screen.blit(a_punch[i], (player_x, 100))
+            player_pic_Direction = pygame.transform.flip(a_punch[i], Direction, False)
+            screen.blit(player_pic_Direction, (player_x, 100))
         else:
             i = 0
             punching = False
