@@ -16,21 +16,36 @@ for f in files:
     temp = pygame.image.load(path + f)
     temp.set_colorkey((255,255,255))
     a_enemy_runner.append(temp)
+
+
+a_enemy_bommer = []
+path = "../assets/enemy_boommer/"
+files = os.listdir(path)
+for f in files:
+    temp = pygame.image.load(path + f)
+    temp.set_colorkey((255,255,255))
+    a_enemy_bommer.append(temp)
     
 class Enemy():
-    def __init__(self, x, y, speed):
+    def __init__(self, x, speed, kind):
         self.x = x
-        self.y = y
         self.speed = speed
+        self.kind = kind
         self.i = 0
 
     def update(self, screen):
         self.i += 1
-        self.x -= self.speed
-        if self.i <= len(a_enemy_runner) -1:
-            screen.blit(a_enemy_runner[self.i], (self.x, 100))
-        else:
-            self.i = 0
+        if self.kind == 1:
+            self.x -= self.speed
+            if self.i <= len(a_enemy_runner) -1:
+                screen.blit(a_enemy_runner[self.i], (self.x, 100))
+            else:
+                self.i = 0
+        if self.kind == 2:
+            if self.i <= len(a_enemy_bommer) -1:
+                screen.blit(a_enemy_bommer[self.i], (self.x, 100))
+            else:
+                self.i = 0
 
 
 player_x = 100
@@ -64,9 +79,10 @@ for f in files:
     temp.set_colorkey((255,255,255))
     a_tap.append(temp)
 
-Enemies = [Enemy(1000, 0, 3)]
-    
+Enemies = [Enemy(1000, 3, 1), Enemy(700, 3, 2)]
 
+floting_giy = pygame.image.load("../assets/floting_giy.gif")
+floting_giy.set_colorkey((255,255,255))
 # ***************** Loop Land Below *****************
 # Everything under 'while running' will be repeated over and over again
 while running:
@@ -78,6 +94,8 @@ while running:
             running = False
     screen.fill((0,0,0))
 
+    screen.blit(floting_giy, (300, 100))
+    
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
         punching = True
