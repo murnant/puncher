@@ -26,6 +26,7 @@ for f in files:
     temp.set_colorkey((255,255,255))
     a_enemy_bommer.append(temp)
     
+    
 class Enemy():
     def __init__(self, x, speed, kind):
         self.x = x
